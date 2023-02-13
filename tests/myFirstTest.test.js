@@ -1,5 +1,5 @@
 
-const {sum} = require("../utils/helper")
+
 
 describe("Number Operations", ()=> {
     test("1 plus 1 should be equal to 2", () => {
@@ -9,7 +9,7 @@ describe("Number Operations", ()=> {
     })
 
     test("5 plus 6 is not equal to 10", () => {
-        let a = 5;
+        let a = 5; 
         let b = 6;
         expect(a+b).not.toBe(10)
     })
@@ -129,8 +129,42 @@ describe("Testing Reference Equality", ()=>{
     })
 })
 
+const {sum, deleteUserById} = require("../utils/helper")
+
 describe("Testing imported functions",()=> {
     test("Sum function should add 2 numbers",()=>{
         expect(sum(5,3)).toBe(8)
         })  
+
+    test("delete by id function should delete a user by their id",()=>{
+        let users = [
+            {
+                user: "Clement",
+                age: 45,
+                id: 1,
+            },
+            {
+                user: "Sarah",
+                age: 40,
+                id: 2,
+            },
+            {
+                user: "Julie",
+                age: 50,
+                id: 3,
+            },
+        ]
+        expect(deleteUserById(users,3)).toEqual([
+            {
+                user: "Clement",
+                age: 45,
+                id: 1,
+            },
+            {
+                user: "Sarah",
+                age: 40,
+                id: 2,
+            },           
+        ])
+    })    
 })
