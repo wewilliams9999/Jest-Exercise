@@ -129,31 +129,57 @@ describe("Testing Reference Equality", ()=>{
     })
 })
 
-const {sum, deleteUserById} = require("../utils/helper")
+const {sum, deleteUserById, findUserById} = require("../utils/helper")
+
+let userdata = [];
+console.log(userdata, 'before all functions')
+
+//this runs once before the first test; runs before beforeEach
+beforeAll(()=>{
+    userdata = ['Clement', 'Sarah']
+    console.log("runs before all tests", userdata)
+})
+
+//beforeEach will run before every test. for example could connect to an API or database and do something
+beforeEach(()=>{
+    console.log("running before each test")
+})
+
+//runs after each test; could do some cleanup - ex. removing yourself from a database connection, etc.
+afterEach(()=>{
+    console.log("running after each test")
+})
+
+//runs after the final test
+afterAll(()=>{
+    console.log("running after the last test", userdata)
+    userdata = [];
+})
 
 describe("Testing imported functions",()=> {
+    let users = [
+        {
+            user: "Clement",
+            age: 45,
+            id: 1,
+        },
+        {
+            user: "Sarah",
+            age: 40,
+            id: 2,
+        },
+        {
+            user: "Julie",
+            age: 50,
+            id: 3,
+        },
+    ]
     test("Sum function should add 2 numbers",()=>{
         expect(sum(5,3)).toBe(8)
         })  
 
     test("delete by id function should delete a user by their id",()=>{
-        let users = [
-            {
-                user: "Clement",
-                age: 45,
-                id: 1,
-            },
-            {
-                user: "Sarah",
-                age: 40,
-                id: 2,
-            },
-            {
-                user: "Julie",
-                age: 50,
-                id: 3,
-            },
-        ]
+
         expect(deleteUserById(users,3)).toEqual([
             {
                 user: "Clement",
@@ -166,5 +192,18 @@ describe("Testing imported functions",()=> {
                 id: 2,
             },           
         ])
+
+        expect(deleteUserById(users,3).length).toBe(2)
     })    
+    
+    //done by Test-Driven Development
+    test("Finds a user by ID from a list of users", ()=>{
+        expect(findUserById(users, 2)).toEqual({
+            user: "Sarah",
+            age: 40,
+            id: 2,
+        })
+
+        expect(findUserById(users,10)).toBeUndefined()
+    })
 })
